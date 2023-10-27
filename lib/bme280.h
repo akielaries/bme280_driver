@@ -3,4 +3,14 @@
 
 #define BME280_ADDR             0x76
 
+
+float temperature();
+
+float pressure();
+
+float humidity();
+
+float altitude();
+
+
 #endif

@@ -23,9 +23,9 @@ float temperature() {
 
 	// Read 24 bytes of data from register(0x88)
 	char reg[1] = {0x88};
-	fwrite(file, reg, 1);
+	write(file, reg, 1);
 	char b1[24] = {0};
-	if(fread(file, b1, 24) != 24)
+	if(read(file, b1, 24) != 24)
 	{
 		printf("Error : Input/Output error \n");
 		exit(1);
