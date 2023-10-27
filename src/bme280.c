@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <time.h>
 #include <math.h>
-#include <wiringPiI2C.h>
 #include "../lib/bme280.h"
 #include <sys/ioctl.h>
 #include <stdlib.h>
@@ -23,9 +22,9 @@ float temperature() {
 
 	// Read 24 bytes of data from register(0x88)
 	char reg[1] = {0x88};
-	fwrite(file, reg, 1);
+	write(file, reg, 1);
 	char b1[24] = {0};
-	if(fread(file, b1, 24) != 24)
+	if(read(file, b1, 24) != 24)
 	{
 		printf("Error : Input/Output error \n");
 		exit(1);
@@ -205,7 +204,7 @@ int main() {
     // traverse array of sensors addresses in hex fmt
     for (uint8_t i = 0; i < sizeof(sensor_addrs); i++) {
         // check if addrs in array are found
-        int sensor_init = wiringPiI2CSetup(sensor_addrs[i]);
+        //int sensor_init = wiringPiI2CSetup(sensor_addrs[i]);
         printf("RET: %d \n", sensor_init);
 
         if (sensor_init < 0) {
