@@ -2,21 +2,22 @@
  * utility file for sensor-agnostic operations
  */
 #include "../lib/util.h"
+#include <fcntl.h>
+#include <linux/i2c-dev.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <linux/i2c-dev.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include <string.h>
-#include <stdint.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
-
-void i2c_scan(const char *bus, unsigned char found_addrs[], size_t *num_found_addrs) {
+void i2c_scan(const char *bus,
+              unsigned char found_addrs[],
+              size_t *num_found_addrs) {
     int file;
 
     // initialize number of found addresses
-    *num_found_addrs = 0; 
+    *num_found_addrs = 0;
 
     // iterate through possible I2C address 0-127
     for (int address = 0x00; address <= 0x7F; address++) {
@@ -68,7 +69,7 @@ int i2c_init(const char *bus, unsigned char addresses[], size_t num_addrs) {
                 break;
             }
         }
-        
+
         // mismatch of available and specified addresses!!
         if (!valid) {
             printf("[!] Invalid address specified: 0x%02X\n", addr);
@@ -85,10 +86,10 @@ int i2c_init(const char *bus, unsigned char addresses[], size_t num_addrs) {
         }
 
         if (ioctl(file, I2C_SLAVE, found_addrs[i]) < 0) {
-            printf("[!] Failed to initialize address: 0x%02X\n", found_addrs[i]);
+            printf("[!] Failed to initialize address: 0x%02X\n",
+                   found_addrs[i]);
             exit(EXIT_FAILURE);
-        } 
-        else {
+        } else {
             printf("[+] Initializing address: 0x%02X\n", found_addrs[i]);
         }
 

@@ -1,24 +1,24 @@
 #ifndef __BME280_H__
 #define __BME280_H__
+#include "addrs.h"
 
-#define BME280_ADDR             0x76
-
-typedef struct Sensors {
+typedef struct BMEData {
+    // file descriptor
+    int file;
     // data array
-    char data[8];
-    // b1 register?
-    char b1[24];
+    char *data;
+    // b1, block data
+    char *block_data;
+} BMEData;
 
-} Sensors;
+void bme280(const HWInfo *hw_info);
 
-
-float temperature();
+float temperature(BMEData *bme_data);
 
 float pressure();
 
 float humidity();
 
 float altitude();
-
 
 #endif

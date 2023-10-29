@@ -19,7 +19,7 @@ VG		= valgrind
 VGFLGS	= --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=memcheck
 
 check-mem:
-	${VG} ${VGFLGS} ${BIN}	
+	${VG} ${VGFLGS} ./${BIN}	
 
 all:
 	${bme280}

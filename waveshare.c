@@ -2,22 +2,64 @@
  * main driver for interacting with waveshare board
  */
 
-#include <stdio.h>
+#include "lib/addrs.h"
+#include "lib/bme280.h"
 #include "lib/util.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int main() {
     // I2C device
-    const char* i2c_bus = "/dev/i2c-1";
-    // I2C device addresses
-    unsigned char sensor_addrs[] = {0x76, 0x68, 0x29, 0x53, 0x28};
+    const char *i2c_bus = "/dev/i2c-1";
+    // I2C device addresses from addrs.h
+    unsigned char sensor_addrs[] = {BME280_ADDR,
+                                    ICM20948_ADDR,
+                                    LTR390_ADDR,
+                                    SGP40_ADDR,
+                                    TSL2591_ADDR};
 
-    // pass in the I2C device, array of addresses, and the number of addresses
-    if (i2c_init(i2c_bus, sensor_addrs, sizeof(sensor_addrs))) {
-        printf("Initialization complete.\n");
-    } else {
-        printf("Initialization failed.\n");
+    // automatic memory allocation
+    // create struct object for Hardware info
+    // HWInfo hw_info;
+
+    // dynamic memory allocation
+    // allocate memory for the Hardware Info struct
+    HWInfo *hw_info = (HWInfo *)malloc(sizeof(HWInfo));
+
+    // check if the hw_info pointer is populated
+    if (hw_info == NULL) {
+        perror("[!] - Memory allocation failed for HWInfo pointer...\n");
+        exit(EXIT_FAILURE);
     }
+
+    // hw_info pointer is populated
+    else {
+        hw_info->i2c_bus = i2c_bus;
+        hw_info->i2c_addrs = sensor_addrs;
+        hw_info->num_addrs = sizeof(sensor_addrs);
+
+        // pass in the I2C device, array of addresses, and the number of
+        // addresses
+        i2c_init(hw_info->i2c_bus, hw_info->i2c_addrs, hw_info->num_addrs);
+
+        // MAIN LOOP
+        while (1) {
+            // call main bme280 function with I2C address
+            bme280(hw_info);
+
+            /* calls to the other sensors functions would look something like
+            this: icm20948(hw_info); ltr390(hw_info); sgp40(hw_info);
+            tsl2591(hw_info);
+            */
+
+            // sleep for 5 seconds
+            sleep(5);
+        }
+    }
+
+    // free hw_info memory
+    free(hw_info);
 
     return 0;
 }
-
