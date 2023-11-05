@@ -19,22 +19,22 @@ int main() {
                                     SGP40_ADDR,
                                     TSL2591_ADDR};
 
-    // automatic memory allocation
-    // create struct object for Hardware info
-    // HWInfo hw_info;
+    // MAIN LOOP
+    while (1) {
+        // automatic memory allocation
+        // create struct object for Hardware info
+        // HWInfo hw_info;
 
-    // dynamic memory allocation
-    // allocate memory for the Hardware Info struct
-    HWInfo *hw_info = (HWInfo *)malloc(sizeof(HWInfo));
+        // dynamic memory allocation
+        // allocate memory for the Hardware Info struct
+        HWInfo *hw_info = (HWInfo *)malloc(sizeof(HWInfo));
 
-    // check if the hw_info pointer is populated
-    if (hw_info == NULL) {
-        perror("[!] - Memory allocation failed for HWInfo pointer...\n");
-        exit(EXIT_FAILURE);
-    }
+        if (hw_info == NULL) {
+            perror("[!] - Memory allocation failed for HWInfo pointer...\n");
+            exit(EXIT_FAILURE);
+        }
 
-    // hw_info pointer is populated
-    else {
+        // hw_info pointer is populated
         hw_info->i2c_bus = i2c_bus;
         hw_info->i2c_addrs = sensor_addrs;
         hw_info->num_addrs = sizeof(sensor_addrs);
@@ -43,24 +43,20 @@ int main() {
         // addresses
         i2c_init(hw_info->i2c_bus, hw_info->i2c_addrs, hw_info->num_addrs);
 
-        // MAIN LOOP
-        while (1) {
-            // call main bme280 function with I2C address
-            bme280(hw_info);
+        // call main bme280 function with I2C address
+        bme280(hw_info);
 
-            /* calls to the other sensors functions would look something like
-            this: icm20948(hw_info); ltr390(hw_info); sgp40(hw_info);
-            tsl2591(hw_info);
-            */
+        /* calls to the other sensors functions would look something like
+        this: icm20948(hw_info); ltr390(hw_info); sgp40(hw_info);
+        tsl2591(hw_info);
+        */
 
-            // sleep for 5 seconds
-            sleep(5);
-        }
+        // sleep for 5 seconds
+        sleep(5);
+
+        // free hw_info memory
+        // TODO this memory will never be freed unless the binary is stopped while running
+        free(hw_info);
     }
-
-    // free hw_info memory
-    // TODO this memory will never be freed unless the binary is stopped while running
-    free(hw_info);
-
     return 0;
 }
