@@ -59,6 +59,7 @@ int main() {
     }
 
     // free hw_info memory
+    // TODO this memory will never be freed unless the binary is stopped while running
     free(hw_info);
 
     return 0;
