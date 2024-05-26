@@ -1,13 +1,13 @@
 # compiler
-CC		= gcc
+CC	= gcc
 # compiler flags
-FLGS	= -std=c18 -march=native -g -Wall -Wextra -pedantic -Wno-unused-result -Wparentheses -Wsign-compare
+FLGS	= -std=c99 -march=native -g -Wall -Wextra -pedantic -Wno-unused-result -Wparentheses -Wsign-compare
 # libaries we need to link against
 LIBS	= -lm
 # source files
-SRC		= waveshare.c src/util.c src/bme280.c
+SRC	= driver.c src/util.c src/bme280.c
 # compiled binary for the waveshare board
-BIN 	= WS_bin
+BIN 	= bme_driver 
 
 # compile core utils
 compile:
