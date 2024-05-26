@@ -5,7 +5,7 @@
 /**
  * WaveShare board I2C sensor addresses
  */
-#define BME280_ADDR     0x76
+#define BME280_ADDR     0x77
 #define ICM20948_ADDR   0x68
 #define LTR390_ADDR     0x53
 #define SGP40_ADDR      0x28

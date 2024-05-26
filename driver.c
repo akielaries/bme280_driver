@@ -1,5 +1,5 @@
 /**
- * main driver for interacting with waveshare board
+ * main driver 
  */
 
 #include "lib/addrs.h"
@@ -11,13 +11,13 @@
 
 int main() {
     // I2C device
-    const char *i2c_bus = "/dev/i2c-1";
+    const char *i2c_bus = "/dev/i2c-2";
     // I2C device addresses from addrs.h
-    unsigned char sensor_addrs[] = {BME280_ADDR,
-                                    ICM20948_ADDR,
-                                    LTR390_ADDR,
-                                    SGP40_ADDR,
-                                    TSL2591_ADDR};
+    unsigned char sensor_addrs[] = {BME280_ADDR};
+                                    //ICM20948_ADDR,
+                                    //LTR390_ADDR,
+                                    //SGP40_ADDR,
+                                    //TSL2591_ADDR};
 
     // MAIN LOOP
     while (1) {
